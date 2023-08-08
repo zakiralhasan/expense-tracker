@@ -1,13 +1,13 @@
 import edigImage from "../../assets/images/edit.svg";
 import deleteImage from "../../assets/images//delete.svg";
 import { useDispatch } from "react-redux";
-import {
-  editActive,
-  removeTransaction,
-} from "../../features/transaction/transactionSlice";
+import { editActive } from "../../features/transaction/transactionSlice";
 import { thousandSeparators } from "../../utilities/thousandSeparator";
+import { useDeleteTransactionMutation } from "../../services/apiRTK";
 
 const Transection = ({ transaction }) => {
+  const [deleteTransaction, response] = useDeleteTransactionMutation();
+  // console.log(response);
   const { id, name, type, amount } = transaction;
   const dispatch = useDispatch();
 
@@ -16,7 +16,7 @@ const Transection = ({ transaction }) => {
   };
 
   const handleDelete = () => {
-    dispatch(removeTransaction(id));
+    deleteTransaction(id);
   };
 
   return (

@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
 import { thousandSeparators } from "../../utilities/thousandSeparator";
+import { useGetTransactionsQuery } from "../../services/apiRTK";
 
 const Balance = () => {
-  const { transactions } = useSelector((state) => state.transaction);
+  const { data: transactions } = useGetTransactionsQuery();
 
   const calculateBalance = (balance) => {
     let income = 0;

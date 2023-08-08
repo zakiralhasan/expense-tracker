@@ -1,16 +1,16 @@
 {
   "transactions": [
     {
-      "name": "Keyboard purchase ",
-      "type": "expense",
-      "amount": 750,
-      "id": 2
-    },
-    {
       "name": "salary",
       "type": "income",
       "amount": 30000,
-      "id": 3
+      "id": 1
+    },
+    {
+      "name": "Keyboard purchase",
+      "type": "expense",
+      "amount": 750,
+      "id": 2
     }
   ]
 }

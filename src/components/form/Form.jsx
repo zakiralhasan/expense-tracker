@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  createTransaction,
-  updateTransaction,
-} from "../../features/transaction/transactionSlice";
+  usePostTransactionMutation,
+  useUpdateTransactionMutation,
+} from "../../services/apiRTK";
+import { editInactive } from "../../features/transaction/transactionSlice";
 
 const Form = () => {
   const [name, setName] = useState("");
@@ -12,9 +13,11 @@ const Form = () => {
   const [editForm, setEditForm] = useState(false);
 
   const dispatch = useDispatch();
-  const { isLoading, isError, editing } = useSelector(
-    (state) => state.transaction
-  );
+  const { editing } = useSelector((state) => state.transaction);
+
+  const [postTransaction] = usePostTransactionMutation();
+  const [updateTransaction, { isLoading, isError }] =
+    useUpdateTransactionMutation();
 
   //below function for get/fetching editing data from the state (used for rerender issue)
   useEffect(() => {
@@ -40,23 +43,21 @@ const Form = () => {
   //below function for create new form data
   const handleForm = (event) => {
     event.preventDefault();
-    dispatch(createTransaction({ name, type, amount: Number(amount) }));
+    postTransaction({ name, type, amount: Number(amount) });
     resetForm();
   };
 
   //below function for update editing form data
   const handleUpdateForm = (event) => {
     event.preventDefault();
-    dispatch(
-      updateTransaction({
-        id: editing.id,
-        data: {
-          name,
-          type,
-          amount,
-        },
-      })
-    );
+    updateTransaction({
+      id: editing.id,
+      data: {
+        name,
+        type,
+        amount: Number(amount),
+      },
+    });
     resetForm();
     setEditForm(false);
   };
@@ -65,6 +66,7 @@ const Form = () => {
   const cancleEditForm = () => {
     resetForm();
     setEditForm(false);
+    dispatch(editInactive());
   };
 
   return (

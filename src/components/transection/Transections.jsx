@@ -1,13 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
 import Transection from "./Transection";
-import { useEffect } from "react";
-import { fetchTransactions } from "../../features/transaction/transactionSlice";
+import { useGetTransactionsQuery } from "../../services/apiRTK";
 
 const Transections = () => {
-  const dispatch = useDispatch();
-  const { transactions, isLoading, isError } = useSelector(
-    (state) => state.transaction
-  );
+  const { data: transactions, isLoading, isError } = useGetTransactionsQuery();
 
   let content = null;
   if (isLoading) content = <p>Loading...</p>;
@@ -20,11 +15,6 @@ const Transections = () => {
   if (!isLoading && !isError && transactions.length === 0) {
     content = <p>No transactions found!</p>;
   }
-
-  //to get data initially from the store. below function initially update the store by taking data from data base
-  useEffect(() => {
-    dispatch(fetchTransactions());
-  }, [dispatch]);
 
   return (
     <>
